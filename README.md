@@ -1,4 +1,4 @@
-# Khovratovich's Equihash in C\##
+# Khovratovich's Equihash in C\# #
 
 A C# translation of **Dmitry Khovratovich's** original C++11 **Equihash** reference implementation.
 
