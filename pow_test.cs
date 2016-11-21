@@ -1,6 +1,8 @@
 namespace khovratovich_equihash_cs
 {
     using System;
+    using System.Reflection;
+
     class pow_test
     {
         /*
@@ -11,23 +13,36 @@ namespace khovratovich_equihash_cs
             p.Test();
         }
         */
-        public void TestEquihash(uint n, uint k, Seed seed)
+        public static void TestEquihash(uint n, uint k, Seed seed)
         {
             throw new NotImplementedException();
         }
 
+
+
+
+
         /*
         static void fatal(const char* error) {
-        fprintf(stderr, "Error: %s\n", error);
-        exit(1);
+            fprintf(stderr, "Error: %s\n", error);
+            exit(1);
         }
         */
+
+        public static int fatal(string error) {
+            Console.WriteLine($"Error: {error}");
+            return 1;
+        }
+
+
+
+
 
         /*
         static void usage(const char* cmd)
         {
             printf("Usage: %s  [-n N] [-k K] "
-    
+
                 "[-s S]\n",
                 cmd);
             printf("Parameters:\n");
@@ -38,8 +53,16 @@ namespace khovratovich_equihash_cs
         */
         public static void usage(string cmd)
         {
-
+            Console.WriteLine($"Usage: {cmd}  [-n N] [-k K] [-s S]");
+            Console.WriteLine("Parameters:\n");
+            Console.WriteLine("\t-n N \t\tSets the tuple length of iterations to N");
+            Console.WriteLine("\t-k K\t\tSets the number of steps to K");
+            Console.WriteLine("\t-s S\t\tSets seed  to S");
         }
+
+
+
+
 
         /*
         int main(int argc, char* argv[])
@@ -130,9 +153,86 @@ namespace khovratovich_equihash_cs
         }
         */
 
-        static void Main(string[] args)
+        static int Main(string[] argc)
         {
+            uint n = 0, k = 0;
+            Seed seed = new Seed(0);
+            if (argc.Length < 6)
+            {
+                usage(Assembly.GetExecutingAssembly().GetName().Name);
+                return 1;
+            }
 
+            /* parse options */
+            for (int i = 0; i < argc.Length; i++)
+            {
+                if (argc[i] == "-n")
+                {
+                    if (i < argc.Length - 1)
+                    {
+                        i++;
+                        uint input;
+                        if (!uint.TryParse(argc[i], out input) || input == 0 || input > 255)
+                        {
+                            return fatal("bad numeric input for -n");
+                        }
+                        n = input;
+                        continue;
+                    }
+                    else
+                    {
+                        return fatal("missing -n argument");
+                    }
+                }
+                else if (argc[i] == "-k")
+                {
+                    if (i < argc.Length - 1)
+                    {
+                        i++;
+                        uint input;
+                        if (!uint.TryParse(argc[i], out input) || input == 0 || input > 20)
+                        {
+                            fatal("bad numeric input for -k");
+                        }
+                        k = input;
+                        continue;
+                    }
+                    else
+                    {
+                        fatal("missing -k argument");
+                    }
+                }
+                if (argc[i] == "-s")
+                {
+                    if (i < argc.Length - 1)
+                    {
+                        i++;
+                        uint input;
+                        if (!uint.TryParse(argc[i], out input) || input == 0 || input > 0xFFFFFF)
+                        {
+                            fatal("bad numeric input for -s");
+                        }
+                        seed = new Seed(input);
+                        continue;
+                    }
+                    else
+                    {
+                        fatal("missing -s argument");
+                    }
+                }
+            }
+            Console.WriteLine($"N:\t%{n}");
+            Console.WriteLine($"K:\t%{k}");
+            Console.Write("SEED: ");
+            for (int i = 0; i < pow.SEED_LENGTH; ++i)
+            {
+                Console.Write($" \t%{seed[i]} ");
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Memory:\t\t%{((((uint)1) << (int)(n / (k + 1))) * pow.LIST_LENGTH * k * sizeof(uint)) / (1 << 10)}KiB");
+            TestEquihash(n, k, seed);
+
+            return 0;
         }
     }
 }

@@ -6,12 +6,12 @@ namespace khovratovich_equihash_cs
 {
     public class pow
     {
-        const int SEED_LENGTH = 4; //Length of seed in dwords ;
-        const int NONCE_LENGTH = 24; //Length of nonce in bytes;
-        const int MAX_NONCE = 0xFFFFF;
-        const int MAX_N = 32; //Max length of n in bytes, should not exceed 32
-        const int LIST_LENGTH = 5;
-        const uint FORK_MULTIPLIER = 3; //Maximum collision factor
+        public const int SEED_LENGTH = 4; //Length of seed in dwords ;
+        public const int NONCE_LENGTH = 24; //Length of nonce in bytes;
+        public const int MAX_NONCE = 0xFFFFF;
+        public const int MAX_N = 32; //Max length of n in bytes, should not exceed 32
+        public const int LIST_LENGTH = 5;
+        public const uint FORK_MULTIPLIER = 3; //Maximum collision factor
 
         /*
         
