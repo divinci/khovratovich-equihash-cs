@@ -408,8 +408,8 @@ namespace khovratovich_equihash_cs
                     bool to_store = (i == k);
                     ResolveCollisions(to_store); //XOR collisions, concatenate indices and shift
                     long resolve_end = Stopwatch.GetTimestamp();
-                    Console.WriteLine($"Filling {(double)(resolve_end - resolve_start)} Ticks \r\n");
-                    Console.WriteLine($"Filling {TimeSpan.FromSeconds((resolve_end - resolve_start) / Stopwatch.Frequency).ToString()}");
+                    Console.WriteLine($"Filling {(double)(resolve_end - resolve_start)} Ticks");
+                    Console.WriteLine($"Filling {TimeSpan.FromSeconds((double)(resolve_end - resolve_start) / Stopwatch.Frequency).ToString()}");
 #if DEBUG
                     sw.WriteLine($"\r\n===RESOLVED AFTER STEP {i}:");
                     PrintTuples(sw);
@@ -418,7 +418,7 @@ namespace khovratovich_equihash_cs
                 long stop_cycles = Stopwatch.GetTimestamp();
 
                 double ticks = stop_cycles - start_cycles;
-                uint kbytes = ((uint)tupleList.GetLongLength(1) * Equihash.LIST_LENGTH * k * sizeof(uint)) / (int)(1UL << 10);
+                uint kbytes = ((uint)tupleList.GetLongLength(0) * Equihash.LIST_LENGTH * k * sizeof(uint)) / (int)(1UL << 10);
                 Console.WriteLine($"Time spent for n={n} k={k}  {kbytes} KiB: {ticks} Ticks");
                 Console.WriteLine($"Time spent for n={n} k={k}  {kbytes} KiB: {TimeSpan.FromSeconds(ticks / Stopwatch.Frequency).ToString()}");
 
@@ -426,11 +426,12 @@ namespace khovratovich_equihash_cs
                 for (int i = 0; i < solutions.Count; ++i)
                 {
                     List<uint> vec = solutions[i].inputs;
-                    vec.Sort();
+                    uint[] vecSorted = vec.ToArray();
+                    Array.Sort(vecSorted);
                     bool dup = false;
-                    for (int k = 0; k < vec.Count - 1; ++k)
+                    for (int k = 0; k < vecSorted.Length - 1; ++k)
                     {
-                        if (vec[k] == vec[k + 1])
+                        if (vecSorted[k] == vecSorted[k + 1])
                             dup = true;
                     }
                     if (!dup)
@@ -439,51 +440,5 @@ namespace khovratovich_equihash_cs
             }
             return new Proof(n, k, seed, nonce, new List<uint>());
         }
-
-
-
-
-        /*
-        bool Proof::Test()
-        {
-            uint32_t input[SEED_LENGTH + 2];
-            for (unsigned i = 0; i < SEED_LENGTH; ++i)
-                input[i] = seed[i];
-            input[SEED_LENGTH] = nonce;
-            input[SEED_LENGTH + 1] = 0;
-            uint32_t buf[MAX_N / 4];
-            std::vector<uint32_t> blocks(k + 1, 0);
-            for (unsigned i = 0; i < inputs.size(); ++i)
-            {
-                input[SEED_LENGTH + 1] = inputs[i];
-                blake2b((uint8_t*)buf, &input, NULL, sizeof(buf), sizeof(input), 0);
-                for (unsigned j = 0; j < (k + 1); ++j)
-                {
-                    //select j-th block of n/(k+1) bits
-                    blocks[j] ^= buf[j] >> (32 - n / (k + 1));
-                }
-            }
-            bool b = true;
-            for (unsigned j = 0; j < (k + 1); ++j)
-            {
-                b &= (blocks[j] == 0);
-            }
-            if (b && inputs.size() != 0)
-            {
-                printf("Solution found:\n");
-                for (unsigned i = 0; i < inputs.size(); ++i)
-                {
-                    printf(" %x ", inputs[i]);
-                }
-                printf("\n");
-            }
-            return b;
-        }
-        */
-        public bool Test()
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

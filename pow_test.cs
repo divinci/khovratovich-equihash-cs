@@ -17,7 +17,7 @@ namespace khovratovich_equihash_cs
         {
             Equihash equihash = new Equihash(n, k, seed);
             Proof p = equihash.FindProof();
-            //p.Test();
+            p.Test();
         }
 
 

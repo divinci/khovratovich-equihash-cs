@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="pow.cs" />
     <Compile Include="pow_test.cs" />
     <Compile Include="Proof.cs" />
