@@ -8,9 +8,10 @@ namespace khovratovich_equihash_cs
 {
     public class Seed : List<uint>
     {
-        public Seed(uint x)
+        public Seed(uint x) : base()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < Equihash.SEED_LENGTH; i++)
+                this.Add(x);
         }
     }
 }

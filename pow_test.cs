@@ -15,7 +15,9 @@ namespace khovratovich_equihash_cs
         */
         public static void TestEquihash(uint n, uint k, Seed seed)
         {
-            throw new NotImplementedException();
+            Equihash equihash = new Equihash(n, k, seed);
+            Proof p = equihash.FindProof();
+            //p.Test();
         }
 
 
@@ -221,15 +223,15 @@ namespace khovratovich_equihash_cs
                     }
                 }
             }
-            Console.WriteLine($"N:\t%{n}");
-            Console.WriteLine($"K:\t%{k}");
+            Console.WriteLine($"N:\t{n}");
+            Console.WriteLine($"K:\t{k}");
             Console.Write("SEED: ");
-            for (int i = 0; i < pow.SEED_LENGTH; ++i)
+            for (int i = 0; i < Equihash.SEED_LENGTH; ++i)
             {
-                Console.Write($" \t%{seed[i]} ");
+                Console.Write($" \t{seed[i]} ");
             }
             Console.WriteLine();
-            Console.WriteLine($"Memory:\t\t%{((((uint)1) << (int)(n / (k + 1))) * pow.LIST_LENGTH * k * sizeof(uint)) / (1 << 10)}KiB");
+            Console.WriteLine($"Memory:\t\t{((((uint)1) << (int)(n / (k + 1))) * Equihash.LIST_LENGTH * k * sizeof(uint)) / (1 << 10)}KiB");
             TestEquihash(n, k, seed);
 
             return 0;
