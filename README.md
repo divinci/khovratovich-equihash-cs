@@ -9,13 +9,13 @@ See the original version over at his GitHub page: (https://github.com/khovratovi
 BUT with the only exception being that I have changed the way the memory structure is represented as follows:
 
 The original C++ 'Tuple' class:
-            
+```C++
 class Tuple {
 public:
     std::vector<uint32_t> blocks;
     uint32_t reference;
 };
-
+```
 ~ has a uin32 list "blocks" and another uint32 "reference".
                 
 This translation will not reference a Tuple class, but instead it will treat all Tuple's
