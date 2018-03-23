@@ -155,6 +155,8 @@ namespace khovratovich_equihash_cs
         }
         */
 
+        //  try
+        //  equihash -n 120 -k 5 -s 3
         static int Main(string[] argc)
         {
             uint n = 0, k = 0;

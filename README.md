@@ -22,5 +22,9 @@ This translation will not reference a Tuple class, but instead it will treat all
 as uint32 arrays with an additional element at the end of the array for storing the 'reference' block.
 The reference block's index will be stored in a variable REFERENCE_BLOCK_INDEX for ease of reading.
 
+Try:
+```
+khovratovich-equihash-cs.exe -n 120 -k 5 -s 3
+```
 
 
